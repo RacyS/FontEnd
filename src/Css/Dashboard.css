@@ -1,0 +1,119 @@
+/* พื้นหลังของทั้งหน้าจอ */
+.chat-app-wrapper {
+    background-color: #f0f2f5;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Sarabun', sans-serif;
+}
+
+/* กล่องแชทหลัก */
+.chat-container {
+    width: 100%;
+    max-width: 500px;
+    height: 80vh;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* ส่วนหัว */
+.chat-header {
+    padding: 15px 20px;
+    background: #0084ff;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-info { display: flex; align-items: center; gap: 8px; }
+.status-dot { width: 10px; height: 10px; border-radius: 50%; }
+.status-dot.online { background: #4dfd00; box-shadow: 0 0 5px #4dfd00; }
+.status-dot.offline { background: #ff4d4d; }
+
+/* หน้าต่างแชท */
+.chat-window {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: #e5ddd5; /* สีพื้นหลังแบบ WhatsApp คลาสสิก */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* จัดวางข้อความ */
+.message-row { display: flex; width: 100%; }
+.message-row.me { justify-content: flex-end; } /* ฝั่งเราอยู่ขวา */
+.message-row.others { justify-content: flex-left; } /* ฝั่งอื่นอยู่ซ้าย */
+
+.message-wrapper { max-width: 75%; display: flex; flex-direction: column; }
+.me .message-wrapper { align-items: flex-end; }
+
+.sender-label {
+    font-size: 11px;
+    margin-bottom: 4px;
+    color: #666;
+    font-weight: bold;
+}
+
+/* ลูกโป่งข้อความ */
+.message-bubble {
+    padding: 10px 14px;
+    border-radius: 15px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.me .message-bubble {
+    background: #0084ff;
+    color: white;
+    border-bottom-right-radius: 2px;
+}
+
+.others .message-bubble {
+    background: white;
+    color: #333;
+    border-bottom-left-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* ส่วนพิมพ์ข้อความ */
+.input-area {
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    background: white;
+    border-top: 1px solid #eee;
+}
+
+.input-area input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+}
+
+.input-area button {
+    background: #0084ff;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.input-area button:disabled { background: #ccc; cursor: not-allowed; }
+.input-area button:hover:not(:disabled) { transform: scale(1.1); }
