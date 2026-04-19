@@ -25,11 +25,22 @@ function UserChat() {
             reconnectDelay: 5000,
             onConnect: () => {
                 setIsConnected(true);
+                fetch(`http://localhost:8080/chat/history/user/${localStorage.getItem("userId")}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("ประวัติแชท:", data)
+                        const history = data.map(log => ({
+                            role: log.role === 1 ? 'user' : log.role === 2 ? 'ai' : 'admin',
+                            text: log.chatLog
+                        }))
+                        setGreetings(history)
+                    })
                 // Subscribe เฉพาะช่องของตัวเอง
                 client.subscribe('/user/queue/reply', (message) => {
                     const parsedData = JSON.parse(message.body);
                     console.log("ได้รับข้อความ:", message.body)
                     setGreetings((prev) => [...prev, {
+
 
                         role: parsedData.role || 'ai', // รองรับ 'ai' หรือ 'admin'
                         text: parsedData.content

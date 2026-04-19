@@ -9,7 +9,7 @@ function AdminDashboard() {
     const [selectedUser, setSelectedUser] = useState(null);
     const [takenOverChats, setTakenOverChats] = useState(new Set());
     const [replyText, setReplyText] = useState('');
-
+    const [userItemIds, setUserItemIds] = useState({})
     const stompClient = useRef(null);
     const scrollRef = useRef(null);
 
@@ -23,9 +23,32 @@ function AdminDashboard() {
             webSocketFactory: () => new SockJS('http://localhost:8080/dashboard/found-item'),
             onConnect: () => {
                 setIsConnected(true);
+                fetch('http://localhost:8080/admin/takenover')//AdminTakeover สถานะ
+                    .then(res => res.json())
+                    .then(data => {
+                        setTakenOverChats(new Set(data))
+                    })
+                fetch('http://localhost:8080/chat/history/all')
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("ประวัติแชททั้งหมด:", data)
+                        const historyChats = {};
+                        Object.entries(data).forEach(([userId, logs]) => {
+                            historyChats[userId] = logs.map(log => ({
+                                senderId: userId,
+                                content: log.chatLog,
+                                role: log.role === 1 ? 'user' : log.role === 2 ? 'ai' : 'admin'
+                            }))
+                        })
+                        setChats(historyChats)
+                    })
+
                 client.subscribe('/topic/admin-dashboard', (message) => {
                     const parsedMessage = JSON.parse(message.body);
                     const senderId = parsedMessage.senderId;
+                    if (parsedMessage.itemId) {
+                        setUserItemIds(prev => ({ ...prev, [senderId]: parsedMessage.itemId }))
+                    }
                     setChats(prevChats => {
                         const existing = prevChats[senderId] || [];
                         return { ...prevChats, [senderId]: [...existing, parsedMessage] };
@@ -64,7 +87,6 @@ function AdminDashboard() {
             body: JSON.stringify({
                 senderId: selectedUser,
                 userId: localStorage.getItem("userId"),
-                tarGetUserid: localStorage.getItem("userId"),
                 role: "admin",
                 itemId:"1242112421",
                 content: replyText
