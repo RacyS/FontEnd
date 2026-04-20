@@ -23,11 +23,6 @@ function AdminDashboard() {
             webSocketFactory: () => new SockJS('http://localhost:8080/dashboard/found-item'),
             onConnect: () => {
                 setIsConnected(true);
-                fetch('http://localhost:8080/admin/takenover')//AdminTakeover สถานะ
-                    .then(res => res.json())
-                    .then(data => {
-                        setTakenOverChats(new Set(data))
-                    })
                 fetch('http://localhost:8080/chat/history/all')
                     .then(res => res.json())
                     .then(data => {
@@ -36,8 +31,8 @@ function AdminDashboard() {
                         Object.entries(data).forEach(([userId, logs]) => {
                             historyChats[userId] = logs.map(log => ({
                                 senderId: userId,
-                                content: log.chatLog,
-                                role: log.role === 1 ? 'user' : log.role === 2 ? 'ai' : 'admin'
+                                content: log.message,
+                                role: log.userId === null ? 'ai' : 'user'
                             }))
                         })
                         setChats(historyChats)
@@ -88,7 +83,7 @@ function AdminDashboard() {
                 senderId: selectedUser,
                 userId: localStorage.getItem("userId"),
                 role: "admin",
-                itemId:"1242112421",
+                itemId:"1",
                 content: replyText
             })
         });

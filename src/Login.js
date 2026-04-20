@@ -17,18 +17,18 @@ function Login() {
             const data = await loginUser(credentials);
             console.log("Response จาก Backend คือ:", data);
 
-            if (data && data.role==="ADMIN") {
+            if (data && data.role === "STAFF") {
                 localStorage.setItem("userRole", data.role);
                 localStorage.setItem("userEmail", credentials.email);
                 localStorage.setItem("userId", data.userId);
                 navigate('/AdminDashboard');
             }
-            else if (data && data.role === "USER") {
+            else if (data && data.role === "STUDENT") {
                 localStorage.setItem("student_id", data.student_id);
                 localStorage.setItem("userId", data.userId);
                 localStorage.setItem("userRole", data.role);
                 localStorage.setItem("userEmail", credentials.email);
-                navigate('/UserChat/found-item'); // ไปหน้า User
+                navigate('/UserChat/found-item');
             }
 
         }catch (error) {
@@ -61,7 +61,6 @@ function Login() {
                         type="password"
                         id="password"
                         name="password"
-                        maxLength={13}
                         placeholder="Enter Password"
                         value={credentials.password}
                         onChange={handleChange}

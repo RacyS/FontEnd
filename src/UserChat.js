@@ -9,6 +9,9 @@ function UserChat() {
     const [isConnected, setIsConnected] = useState(false);
     const stompClient = useRef(null);
     const scrollRef = useRef(null);
+    const [currentItemId, setCurrentItemId] = useState(
+        localStorage.getItem("itemId") || ""
+    )
 
     const savedId = localStorage.getItem("student_id");
     const myUserId = savedId || "Unknown_User";
@@ -16,22 +19,25 @@ function UserChat() {
     useEffect(() => {
         scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [greetings]);
-
+    localStorage.setItem("itemId", "1")
     const connect = () => {
         if (stompClient.current?.active) return;
 
         const client = new Client({
             webSocketFactory: () => new SockJS('http://localhost:8080/dashboard/found-item'),
             reconnectDelay: 5000,
+
             onConnect: () => {
                 setIsConnected(true);
-                fetch(`http://localhost:8080/chat/history/user/${localStorage.getItem("userId")}`)
+                fetch(`http://localhost:8080/chat/history/user/${localStorage.getItem("userId")}/item/${localStorage.getItem("itemId")}`)
                     .then(res => res.json())
                     .then(data => {
                         console.log("ประวัติแชท:", data)
                         const history = data.map(log => ({
-                            role: log.role === 1 ? 'user' : log.role === 2 ? 'ai' : 'admin',
-                            text: log.chatLog
+                            role: log.userId === null ? 'ai'
+                                : log.userId === parseInt(localStorage.getItem("userId")) ? 'user'
+                                    : 'admin',
+                            text: log.message
                         }))
                         setGreetings(history)
                     })
@@ -66,21 +72,42 @@ function UserChat() {
         // eslint-disable-next-line
     }, []);
 
+
     const sendName = (e) => {
         e.preventDefault();
         if (isConnected && name.trim()) {
+            let messageContent = name.trim();
+            let itemId = currentItemId; // ใช้ค่าเดิมก่อน
+
+            if (messageContent.startsWith("#")) {
+                // ดึง itemId แต่ไม่ตัด content
+                itemId = messageContent.split(' ')[0].substring(1);
+                setCurrentItemId(itemId);
+                localStorage.setItem("itemId", itemId);
+            }
+
             const chatPayload = {
                 senderId: localStorage.getItem("student_id"),
                 userId: localStorage.getItem("userId"),
-                content: name,
+                content: messageContent, // ← ส่ง content ทั้งหมดไปเลย รวม #
                 role: "user",
-                itemId:"1242112421"
+                itemId: itemId
             };
-            setGreetings(prev => [...prev, { role: 'user', text: name }]);
+
+            setGreetings(prev => [...prev, { role: 'user', text: messageContent }]);
             stompClient.current.publish({
                 destination: "/app/chat.toUser",
                 body: JSON.stringify(chatPayload)
             });
+            if (!itemId) {
+                // ยังไม่ได้ระบุ item ให้แจ้ง user
+                setGreetings(prev => [...prev, {
+                    role: 'system',
+                    text: 'กรุณาระบุรหัสของก่อน เช่น พิมพ์ #1 เพื่อแจ้งของหายชิ้นที่ 1'
+                }])
+                setname('')
+                return
+            }
             setname('');
         }
     };
