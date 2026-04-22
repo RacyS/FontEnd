@@ -28,7 +28,7 @@ function Login() {
                 localStorage.setItem("userId", data.userId);
                 localStorage.setItem("userRole", data.role);
                 localStorage.setItem("userEmail", credentials.email);
-                navigate('/UserChat/found-item');
+                navigate('/HomePage');
             }
 
         }catch (error) {

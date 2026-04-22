@@ -1,18 +1,22 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Login from './Login';
-import AdminDashboard from './AdminDashboard';
-import UserChat from "./UserChat";
+import AdminDashboard from './Admin/AdminDashboard';
+import HomePage from "./HomePage";
+import UserChat from './User/UserChat'
+import DisplayItem from './DisplayItem'
 
 function App() {
     return (
         <Router>
             <Routes>
                 <Route path="/" element={<Login />} />
-                <Route path="/UserChat/found-item" element={<UserChat />} />
+                <Route path="/HomePage" element={<HomePage />} />
 
-                {/* 2. เพิ่ม Route สำหรับหน้า Admin ตามที่ระบุไว้ในคำสั่ง navigate */}
+                <Route path="/dashboard/found-item" element={<UserChat />}/>
                 <Route path="/AdminDashboard" element={<AdminDashboard />} />
+
+                <Route path="/test-item" element={<DisplayItem />} />
             </Routes>
         </Router>
     );

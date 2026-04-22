@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import './Css/Dashboard.css';
+import '../Css/Dashboard.css';
+import Navbar from "../components/NavBar";
 
 function UserChat() {
     const [name, setname] = useState('');
@@ -29,14 +30,14 @@ function UserChat() {
 
             onConnect: () => {
                 setIsConnected(true);
-                fetch(`http://localhost:8080/chat/history/user/${localStorage.getItem("userId")}/item/${localStorage.getItem("itemId")}`)
+                const userId = localStorage.getItem("userId")
+                const itemId = localStorage.getItem("itemId")
+                fetch(`http://localhost:8080/chat/history/user/${userId}/all`)
                     .then(res => res.json())
                     .then(data => {
                         console.log("ประวัติแชท:", data)
                         const history = data.map(log => ({
-                            role: log.userId === null ? 'ai'
-                                : log.userId === parseInt(localStorage.getItem("userId")) ? 'user'
-                                    : 'admin',
+                            role: log.role,
                             text: log.message
                         }))
                         setGreetings(history)
@@ -113,49 +114,52 @@ function UserChat() {
     };
 
     return (
-        <div className="chat-app-wrapper">
-            <div className="chat-container">
-                <header className="chat-header">
-                    <div className="status-info">
-                        <span className={`status-dot ${isConnected ? 'online' : 'offline'}`}></span>
-                        <h2>ระบบแจ้งของหาย (ID: {myUserId})</h2>
-                    </div>
-                    {!isConnected && <button className="reconnect-btn" onClick={connect}>เชื่อมต่อใหม่</button>}
-                </header>
+        <div className="container">
+            <Navbar />
+            <div className="chat-app-wrapper">
+                <div className="chat-container">
+                    <header className="chat-header">
+                        <div className="status-info">
+                            <span className={`status-dot ${isConnected ? 'online' : 'offline'}`}></span>
+                            <h2>ระบบแจ้งของหาย (ID: {myUserId})</h2>
+                        </div>
+                        {!isConnected && <button className="reconnect-btn" onClick={connect}>เชื่อมต่อใหม่</button>}
+                    </header>
 
-                <section className="chat-window">
-                    {greetings.length === 0 && (
-                        <div className="empty-chat">เริ่มการสนทนาโดยการพิมพ์ข้อความด้านล่าง</div>
-                    )}
-                    {greetings.map((msg, idx) => (
-                        <div key={idx} className={`message-row ${msg.role === 'user' ? 'me' : 'others'}`}>
-                            <div className="message-wrapper">
-                                <span className="sender-label">
-                                    {msg.role === 'user' ? 'คุณ' : msg.role === 'admin' ? 'เจ้าหน้าที่' : '🤖 AI'}
-                                </span>
-                                <div className="message-bubble">
-                                    {msg.text}
+                    <section className="chat-window">
+                        {greetings.length === 0 && (
+                            <div className="empty-chat">เริ่มการสนทนาโดยการพิมพ์ข้อความด้านล่าง</div>
+                        )}
+                        {greetings.map((msg, idx) => (
+                            <div key={idx} className={`message-row ${msg.role === 'user' ? 'me' : 'others'}`}>
+                                <div className="message-wrapper">
+                                    <span className="sender-label">
+                                        {msg.role === 'user' ? 'คุณ' : msg.role === 'admin' ? 'เจ้าหน้าที่' : '🤖 AI'}
+                                    </span>
+                                    <div className="message-bubble">
+                                        {msg.text}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                    <div ref={scrollRef} />
-                </section>
+                        ))}
+                        <div ref={scrollRef} />
+                    </section>
 
-                <form className="input-area" onSubmit={sendName}>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setname(e.target.value)}
-                        placeholder={isConnected ? "พิมพ์ข้อความ..." : "ขาดการเชื่อมต่อ..."}
-                        disabled={!isConnected}
-                    />
-                    <button type="submit" disabled={!isConnected || !name.trim()}>
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                        </svg>
-                    </button>
-                </form>
+                    <form className="input-area" onSubmit={sendName}>
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setname(e.target.value)}
+                            placeholder={isConnected ? "เริ่มด้วย #(Idของ) (ตามด้วยรุบะลักษณะสิ่่่งของ)..." : "ขาดการเชื่อมต่อ..."}
+                            disabled={!isConnected}
+                        />
+                        <button type="submit" disabled={!isConnected || !name.trim()}>
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     );
