@@ -1,0 +1,51 @@
+.admin-page-bg {
+    background-color: #f0f2f5;
+    min-height: 100vh;
+}
+
+.add-item-card {
+    border: none !important;
+    border-radius: 15px !important;
+}
+
+.add-item-card .card-header {
+    background: #343a40 !important; /* สีเข้มแบบ Admin */
+    border-radius: 15px 15px 0 0 !important;
+}
+
+.image-preview-box {
+    background-color: #ffffff;
+    border: 2px dashed #ced4da;
+    border-radius: 12px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.image-preview-box img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.detail-section {
+    border-left: 4px solid #0d6efd !important;
+}
+
+.btn-submit {
+    border-radius: 30px !important;
+    font-weight: bold !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-3px);
+}
+
+.form-control, .form-select {
+    border-radius: 8px !important;
+}
