@@ -27,15 +27,36 @@ function AdminDashboard() {
                     .then(res => res.json())
                     .then(data => {
                         console.log("ประวัติแชททั้งหมด:", data)
+                        const firstKey = Object.keys(data)[0]
+                        const firstLog = data[firstKey][0]
+                        console.log("log แรก:", firstLog)
+                        console.log("itemId:", firstLog?.itemId) // เพิ่มตรงนี้
                         const historyChats = {};
                         Object.entries(data).forEach(([userId, logs]) => {
                             historyChats[userId] = logs.map(log => ({
                                 senderId: userId,
                                 content: log.message,
-                                role: log.userId === null ? 'ai' : 'user'
+                                role: log.role,
+                                itemId: log.itemId //
                             }))
+                            const lastLog = logs[logs.length - 1]
+                            console.log("userId:", userId, "lastLog itemId:", lastLog?.itemId)
+                            if (lastLog?.itemId) {
+                                setUserItemIds(prev => ({ ...prev, [userId]: String(lastLog.itemId) }))
+                            }
+
                         })
                         setChats(historyChats)
+                    })
+                fetch('http://localhost:8080/chat/status/all')
+                    .then(res => res.json())
+                    .then(data => {
+                        const takenOver = new Set(
+                            Object.entries(data)
+                                .filter(([_, status]) => status === 'STAFF_ACTIVE')
+                                .map(([studentId]) => studentId)
+                        )
+                        setTakenOverChats(takenOver)
                     })
 
                 client.subscribe('/topic/admin-dashboard', (message) => {
@@ -62,14 +83,20 @@ function AdminDashboard() {
     }, []);
 
     const adminTakeOVer = () => {
+        console.log("userItemIds ตอนกด:", userItemIds) //
+        console.log("selectedUser:", selectedUser)
+        console.log("itemId ที่จะส่ง:", userItemIds[selectedUser])
         stompClient.current.publish({
             destination: "/app/admin.takeOver",
             body: JSON.stringify({
                 senderId: selectedUser,
                 role: "admin",
+                userId: localStorage.getItem("userId"),
+                itemId: userItemIds[selectedUser],
                 content: "--- เจ้าหน้าที่ได้เข้าควบคุมการสนทนาแล้ว ---"
             })
         });
+
         setTakenOverChats(prev => new Set([...prev, selectedUser]));
     };
 
@@ -77,13 +104,16 @@ function AdminDashboard() {
         e.preventDefault();
         if (!replyText.trim()) return;
 
+        console.log("selectedUser:", selectedUser)
+        console.log("userItemIds:", userItemIds)
+        console.log("itemId ที่จะส่ง:", userItemIds[selectedUser])
         stompClient.current.publish({
             destination: "/app/admin.chat.toUser",
             body: JSON.stringify({
                 senderId: selectedUser,
                 userId: localStorage.getItem("userId"),
                 role: "admin",
-                itemId:"1",
+                itemId: userItemIds[selectedUser] || null,
                 content: replyText
             })
         });

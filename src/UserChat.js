@@ -29,14 +29,14 @@ function UserChat() {
 
             onConnect: () => {
                 setIsConnected(true);
-                fetch(`http://localhost:8080/chat/history/user/${localStorage.getItem("userId")}/item/${localStorage.getItem("itemId")}`)
+                const userId = localStorage.getItem("userId")
+                const itemId = localStorage.getItem("itemId")
+                fetch(`http://localhost:8080/chat/history/user/${userId}/all`)
                     .then(res => res.json())
                     .then(data => {
                         console.log("ประวัติแชท:", data)
                         const history = data.map(log => ({
-                            role: log.userId === null ? 'ai'
-                                : log.userId === parseInt(localStorage.getItem("userId")) ? 'user'
-                                    : 'admin',
+                            role: log.role,
                             text: log.message
                         }))
                         setGreetings(history)
@@ -147,7 +147,7 @@ function UserChat() {
                         type="text"
                         value={name}
                         onChange={(e) => setname(e.target.value)}
-                        placeholder={isConnected ? "พิมพ์ข้อความ..." : "ขาดการเชื่อมต่อ..."}
+                        placeholder={isConnected ? "เริ่มด้วย #(Idของ) (ตามด้วยรุบะลักษณะสิ่่่งของ)..." : "ขาดการเชื่อมต่อ..."}
                         disabled={!isConnected}
                     />
                     <button type="submit" disabled={!isConnected || !name.trim()}>
