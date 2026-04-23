@@ -55,13 +55,18 @@ function AdminDashboard() {
                         );
                         setTakenOverChats(takenOver);
                     });
+                fetch('http://localhost:8080/chat/verified/all')
+                    .then(res => res.json())
+                    .then(data => {
+                        setVerifiedUsers(new Set(data))
+                    })
 
                 client.subscribe('/topic/admin-dashboard', (message) => {
                     const parsedMessage = JSON.parse(message.body);
                     const senderId = parsedMessage.senderId;
                     // ถ้าเป็น notify → เปลี่ยน background ไม่เพิ่มแชท
                     if (parsedMessage.role === 'notify') {
-                        setVerifiedUsers(prev => new Set([...prev, senderId]))
+                        setVerifiedUsers(prev => new Set([...prev, `${senderId}_${parsedMessage.itemId}`]))
                         return // ← ไม่เพิ่มใน chats
                     }
                     // ข้อความปกติ
@@ -151,13 +156,13 @@ function AdminDashboard() {
                         {userList.map(userId => (
                             <li
                                 key={userId}
-                                className={`user-item ${selectedUser === userId ? 'active' : ''} ${verifiedUsers.has(userId) ? 'verified-bg' : ''}`}
+                                className={`user-item ${selectedUser === userId ? 'active' : ''} ${verifiedUsers.has(`${userId}_${userItemIds[userId]}`) ? 'verified-bg' : ''}`}
                                 onClick={() => setSelectedUser(userId)}
                             >
                                 <div className="user-info-brief">
                                     <h4>
                                         User: {userId}
-                                        {verifiedUsers.has(userId) && ' ✅'}
+                                        {verifiedUsers.has(`${userId}_${userItemIds[userId]}`) && ' ✅'}
                                     </h4>
                                     <div className="last-msg">
                                         {chats[userId]?.length > 0

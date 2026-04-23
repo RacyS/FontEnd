@@ -81,10 +81,12 @@ function UserChat() {
             let itemId = currentItemId; // ใช้ค่าเดิมก่อน
 
             if (messageContent.startsWith("#")) {
-                // ดึง itemId แต่ไม่ตัด content
-                itemId = messageContent.split(' ')[0].substring(1);
-                setCurrentItemId(itemId);
-                localStorage.setItem("itemId", itemId);
+                const match = messageContent.match(/^#(\d+)/)
+                if (match) {
+                    itemId = match[1]
+                    setCurrentItemId(itemId)
+                    localStorage.setItem("itemId", itemId)
+                }
             }
 
             const chatPayload = {

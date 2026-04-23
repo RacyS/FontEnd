@@ -104,17 +104,18 @@
 }
 
 .user-item.active {
-    background: var(--primary-light);
+    background: #217ded;
     border-left: 3px solid var(--primary);
 }
 
 /* Verified highlight */
 .user-item.verified-bg {
-    background: #fefce8;
+    background:#9ffcc6;
+    border-left: 3px solid green;
 }
 .user-item.verified-bg.active {
-    background: #fef9c3;
-    border-left: 3px solid #ca8a04;
+    background: #32fa86;
+    border-left: 3px solid green;
 }
 
 .user-info-brief h4 {
