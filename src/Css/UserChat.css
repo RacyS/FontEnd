@@ -1,0 +1,328 @@
+/* ──────────────────────────────────────
+   UserChat.css
+────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary:       #2563eb;
+    --primary-dark:  #1d4ed8;
+    --primary-light: #eff6ff;
+
+    --bubble-user:   #2563eb;   /* ฟองผู้ใช้ - น้ำเงิน */
+    --bubble-ai:     #ffffff;   /* ฟองAI - ขาว */
+    --bubble-admin:  #f0fdf4;   /* ฟองเจ้าหน้าที่ - เขียวอ่อน */
+    --bubble-system: #fefce8;   /* ฟอง system - เหลืองอ่อน */
+
+    --border:        #e2e8f0;
+    --bg-page:       #f1f5f9;
+    --bg-chat:       #f8fafc;   /* พื้นหลังหน้าต่างแชท */
+    --bg-card:       #ffffff;
+
+    --text-main:     #0f172a;
+    --text-sub:      #475569;
+    --text-muted:    #94a3b8;
+
+    --header-h:      60px;      /* ความสูง Navbar */
+    --radius-md:     10px;
+    --radius-lg:     16px;
+    --radius-full:   999px;
+
+    font-family: 'IBM Plex Sans', 'Noto Sans Thai', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ────────────────────────────────────────
+   PAGE WRAPPER
+──────────────────────────────────────── */
+.chat-app-wrapper {
+    height: calc(100vh - var(--header-h));
+    background: var(--bg-page);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+}
+
+/* ────────────────────────────────────────
+   CHAT CONTAINER
+──────────────────────────────────────── */
+.chat-container {
+    width: 100%;
+    max-width: 560px;
+    height: 100%;
+    max-height: 780px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;  /* header → messages → input จากบนลงล่าง */
+}
+
+/* ────────────────────────────────────────
+   HEADER
+──────────────────────────────────────── */
+.chat-header {
+    padding: 0 1.25rem;
+    height: 58px;
+    flex-shrink: 0;
+    background: var(--primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.status-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.status-info h2 {
+    font-size: 13.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Status Dot */
+.status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-dot.online {
+    background: #4ade80;
+    box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.35);
+}
+
+.status-dot.offline {
+    background: #fca5a5;
+}
+
+/* Reconnect Button */
+.reconnect-btn {
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+
+.reconnect-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ────────────────────────────────────────
+   CHAT WINDOW  –  Messages
+──────────────────────────────────────── */
+.chat-window {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.25rem 1rem;
+    background: var(--bg-chat);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.chat-window::-webkit-scrollbar { width: 4px; }
+.chat-window::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* Empty State */
+.empty-chat {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 2rem;
+}
+
+/* ────────────────────────────────────────
+   MESSAGE ROWS
+──────────────────────────────────────── */
+.message-row {
+    display: flex;
+    width: 100%;
+}
+
+.message-row.me {
+    justify-content: flex-end;    /* user → ขวา */
+}
+
+.message-row.others {
+    justify-content: flex-start;  /* ai/admin → ซ้าย */
+}
+
+.message-wrapper {
+    max-width: 72%;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.me .message-wrapper {
+    align-items: flex-end;
+}
+
+.others .message-wrapper {
+    align-items: flex-start;
+}
+
+/* Sender Label */
+.sender-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 0 4px;
+}
+
+/* ────────────────────────────────────────
+   BUBBLES
+──────────────────────────────────────── */
+.message-bubble {
+    padding: 9px 13px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    word-break: break-word;
+    border-radius: 14px;
+}
+
+/* User (ขวา) */
+.me .message-bubble {
+    background: var(--bubble-user);
+    color: #ffffff;
+    border-bottom-right-radius: 3px;
+}
+
+/* AI (ซ้าย) */
+.others .message-bubble {
+    background: var(--bubble-ai);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 3px;
+}
+
+/* Admin (ซ้าย - โทนเขียว) */
+.others.admin-msg .message-bubble {
+    background: var(--bubble-admin);
+    border-color: #bbf7d0;
+    color: #14532d;
+}
+
+/* System (กลาง - เหลือง) */
+.message-row.system-msg {
+    justify-content: center;
+}
+
+.system-msg .message-bubble {
+    background: var(--bubble-system);
+    color: #854d0e;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* ────────────────────────────────────────
+   INPUT AREA
+──────────────────────────────────────── */
+.input-area {
+    padding: 0.875rem 1rem;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 0.625rem;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.input-area input {
+    flex: 1;
+    height: 42px;
+    padding: 0 1rem;
+    font-size: 13.5px;
+    font-family: inherit;
+    color: var(--text-main);
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.input-area input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+    background: #fff;
+}
+
+.input-area input:disabled {
+    background: var(--bg-page);
+    color: var(--text-muted);
+    cursor: not-allowed;
+}
+
+/* Send Button */
+.input-area button[type="submit"] {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, transform 0.1s;
+}
+
+.input-area button[type="submit"]:hover:not(:disabled) {
+    background: var(--primary-dark);
+    transform: scale(1.07);
+}
+
+.input-area button[type="submit"]:disabled {
+    background: var(--border);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ────────────────────────────────────────
+   RESPONSIVE
+──────────────────────────────────────── */
+@media (max-width: 600px) {
+    .chat-app-wrapper {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .chat-container {
+        max-width: 100%;
+        max-height: calc(100vh - var(--header-h));
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        border-bottom: none;
+    }
+}

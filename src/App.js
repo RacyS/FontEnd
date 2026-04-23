@@ -4,6 +4,7 @@ import Login from './Login';
 import AdminDashboard from './Admin/AdminDashboard';
 import HomePage from "./HomePage";
 import UserChat from './User/UserChat'
+import AddItem from './Admin/AddItem'
 import DisplayItem from './DisplayItem'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
                 <Route path="/dashboard/found-item" element={<UserChat />}/>
                 <Route path="/AdminDashboard" element={<AdminDashboard />} />
 
+                <Route path="/add-item" element={<AddItem />} />
                 <Route path="/test-item" element={<DisplayItem />} />
             </Routes>
         </Router>

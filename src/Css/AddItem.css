@@ -1,0 +1,483 @@
+/* ─────────────────────────────────────────
+   AddItem.css  –  Layout: บน→ล่าง / ซ้าย↔ขวา
+───────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+/* ── CSS Variables ── */
+:root {
+    --primary:        #2563eb;
+    --primary-hover:  #1d4ed8;
+    --primary-light:  #eff6ff;
+    --primary-mid:    #bfdbfe;
+
+    --success:        #16a34a;
+    --success-light:  #dcfce7;
+    --success-border: #86efac;
+
+    --border:         #e2e8f0;
+    --border-strong:  #cbd5e1;
+
+    --bg-page:        #f1f5f9;
+    --bg-card:        #ffffff;
+    --bg-sidebar:     #f8fafc;
+
+    --text-main:      #0f172a;
+    --text-sub:       #475569;
+    --text-muted:     #94a3b8;
+
+    --radius-sm:  6px;
+    --radius-md:  10px;
+    --radius-lg:  16px;
+    --radius-xl:  20px;
+
+    --shadow-card: 0 1px 2px rgba(0,0,0,0.04), 0 4px 20px rgba(0,0,0,0.05);
+
+    font-family: 'IBM Plex Sans', 'Noto Sans Thai', system-ui, sans-serif;
+}
+
+/* ────────────────────────────────────────
+   PAGE WRAPPER  –  ไหลจากบนลงล่าง
+──────────────────────────────────────── */
+.add-item-page {
+    background: var(--bg-page);
+    min-height: 100vh;
+    padding: 2rem 2.5rem;
+    display: flex;
+    flex-direction: column;  /* บน → ล่าง */
+    gap: 0;
+}
+
+/* ── Breadcrumb ── */
+.breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+}
+
+.breadcrumb-nav .bc-sep {
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+.breadcrumb-nav .bc-active {
+    color: var(--primary);
+}
+
+/* ── Page Header ── */
+.page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1.75rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.page-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.page-header-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+/* ────────────────────────────────────────
+   FORM CARD  –  ซ้าย (รูป) ↔ ขวา (ฟอร์ม)
+──────────────────────────────────────── */
+.form-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+
+    /* Grid: คอลัมน์ซ้ายกว้างตายตัว คอลัมน์ขวายืดเต็มพื้นที่ */
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: 1fr;
+    min-height: 560px;
+}
+
+/* ────────────────────────────────────────
+   LEFT COLUMN  –  รูปภาพ
+──────────────────────────────────────── */
+.image-side {
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+
+    display: flex;
+    flex-direction: column;  /* จัดเนื้อหาในคอลัมน์ซ้ายจากบนลงล่าง */
+    gap: 1.25rem;
+}
+
+.col-section-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+/* Upload Zone */
+.upload-area {
+    border: 2px dashed var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 1.75rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    background: white;
+    transition: border-color 0.18s ease, background 0.18s ease;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.upload-area:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.upload-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background: var(--primary-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.35rem;
+}
+
+.upload-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.upload-sub {
+    font-size: 11.5px;
+    color: var(--text-sub);
+}
+
+.upload-hint {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* Preview */
+.preview-box {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: #f1f5f9;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.preview-empty-icon {
+    color: var(--text-muted);
+    font-size: 2.5rem;
+}
+
+/* ────────────────────────────────────────
+   RIGHT COLUMN  –  ฟอร์ม
+──────────────────────────────────────── */
+.form-side {
+    padding: 2rem 2.25rem;
+
+    display: flex;
+    flex-direction: column;  /* ฟิลด์ต่างๆ ไหลจากบนลงล่าง */
+    gap: 0;
+}
+
+/* Item Name + Status row */
+.form-top-row {
+    display: grid;
+    grid-template-columns: 1fr 180px;
+    gap: 1rem;
+    align-items: end;
+    margin-bottom: 1.5rem;
+}
+
+.form-field-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-sub);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.4rem;
+    display: block;
+}
+
+.form-control-styled {
+    width: 100%;
+    height: 44px;
+    padding: 0 0.875rem;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-main);
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+}
+
+.form-control-styled:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.form-control-styled::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* Status Badge */
+.status-badge {
+    height: 30px;
+    display: inline-flex;
+    margin-left: 2rem;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--success-light);
+    color: var(--success);
+    border: 1px solid var(--success-border);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Section Divider */
+.form-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 0 1.25rem 0;
+}
+
+/* Additional Fields Header */
+.additional-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.additional-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+}
+
+.btn-add-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.btn-add-row:hover {
+    text-decoration: underline;
+}
+
+/* Dynamic Field Rows */
+.additional-fields {
+    display: flex;
+    flex-direction: column;  /* แถวของฟิลด์ ไหลจากบนลงล่าง */
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+    flex: 1;
+}
+
+.dynamic-row {
+    display: grid;
+    grid-template-columns: 175px 1fr 36px;
+    gap: 8px;
+    align-items: center;
+}
+
+.dynamic-row select,
+.dynamic-row input[type="text"] {
+    height: 38px;
+    padding: 0 0.75rem;
+    font-size: 13.5px;
+    color: var(--text-main);
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.15s;
+    width: 100%;
+}
+
+
+.dynamic-row select:focus,
+.dynamic-row input[type="text"]:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.dynamic-row select:disabled {
+    background: var(--bg-sidebar);
+    color: var(--text-muted);
+    cursor: not-allowed;
+}
+
+.border-dashed {
+    border-style: dashed !important;
+    color: var(--text-muted);
+}
+
+.btn-delete-row {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+
+.btn-delete-row:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* ── Submit Button ── */
+.btn-save-main {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s;
+    margin-top: auto;
+    font-family: inherit;
+    letter-spacing: 0.01em;
+}
+
+.btn-save-main:hover:not(:disabled) {
+    background: var(--primary-hover);
+}
+
+.btn-save-main:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.btn-save-hint {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-top: 0.6rem;
+}
+
+/* ── Cancel Button ── */
+.btn-cancel {
+    height: 38px;
+    padding: 0 1.25rem;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-sub);
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    font-family: inherit;
+}
+
+.btn-cancel:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-sidebar);
+}
+
+/* ── Material Symbols ── */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+/* ────────────────────────────────────────
+   RESPONSIVE  –  หน้าจอเล็ก → บนล่าง
+──────────────────────────────────────── */
+@media (max-width: 860px) {
+    .add-item-page {
+        padding: 1.25rem;
+    }
+
+    .form-card {
+        grid-template-columns: 1fr;  /* stack ซ้อนกัน */
+        grid-template-rows: auto 1fr;
+    }
+
+    .image-side {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .form-top-row {
+        grid-template-columns: 1fr;
+    }
+
+    .dynamic-row {
+        grid-template-columns: 1fr 1fr 36px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

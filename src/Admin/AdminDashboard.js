@@ -174,19 +174,22 @@ function AdminDashboard() {
                     {selectedUser ? (
                         <>
                             <header className="chat-header-bar">
-                                <div>
-                                    <strong>สนทนากับ: {selectedUser}</strong>
+                                <strong>สนทนากับ: {selectedUser}</strong>
+                                <div className="chat-header-actions">
+                                    {!takenOverChats.has(selectedUser) ? (
+                                        <button className="takeover-btn" onClick={adminTakeOVer}>
+                                            รับเคส (ปิด AI)
+                                        </button>
+                                    ) : (
+                                        <>
+                                            <span className="active-label">✅ กำลังดูแล</span>
+                                            <button className="letover-btn" onClick={adminLetOVer}>
+                                                คืนให้ AI
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
-                                {!takenOverChats.has(selectedUser) ? (
-                                    <button className="takeover-btn" onClick={adminTakeOVer}>🙋 รับเคส (ปิด AI)</button>
-                                ) : (
-                                    <>
-                                        <span style={{ color: '#2e7d32', fontWeight: 'bold' }}>✅ กำลังดูแล</span>
-                                        <button className="letover-btn" onClick={adminLetOVer}>🤖 Ai (เปิด AI)</button>
-                                    </>
-                                )}
                             </header>
-
                             <div className="messages-container">
                                 {chats[selectedUser].map((msg, idx) => (
                                     <div key={idx} className={`bubble-row ${msg.role === 'admin' ? 'admin' : 'other'}`}>

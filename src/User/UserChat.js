@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import '../Css/Dashboard.css';
+import '../Css/UserChat.css';
 import Navbar from "../components/NavBar";
 
 function UserChat() {
@@ -112,7 +112,6 @@ function UserChat() {
             setname('');
         }
     };
-
     return (
         <div className="container">
             <Navbar />
@@ -130,18 +129,32 @@ function UserChat() {
                         {greetings.length === 0 && (
                             <div className="empty-chat">เริ่มการสนทนาโดยการพิมพ์ข้อความด้านล่าง</div>
                         )}
-                        {greetings.map((msg, idx) => (
-                            <div key={idx} className={`message-row ${msg.role === 'user' ? 'me' : 'others'}`}>
-                                <div className="message-wrapper">
-                                    <span className="sender-label">
-                                        {msg.role === 'user' ? 'คุณ' : msg.role === 'admin' ? 'เจ้าหน้าที่' : '🤖 AI'}
-                                    </span>
-                                    <div className="message-bubble">
-                                        {msg.text}
+
+                        {greetings.map((msg, idx) => {
+                            const isMe     = msg.role === 'user';
+                            const isAdmin  = msg.role === 'admin';
+                            const isSystem = msg.role === null;
+
+                            const rowClass = isMe
+                                ? 'message-row me'
+                                : isSystem
+                                    ? 'message-row others system-msg'
+                                    : isAdmin
+                                        ? 'message-row others admin-msg'
+                                        : 'message-row others';
+                            return (
+                                <div key={idx} className={rowClass}>
+                                    <div className="message-wrapper">
+                                        <span className="sender-label">
+                                            {isMe ? 'คุณ' : isAdmin ? '👨‍💼 เจ้าหน้าที่' : isSystem ? '⚙️ ระบบ' : '🤖 AI'}
+                                        </span>
+                                        <div className="message-bubble">
+                                            {msg.text}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                         <div ref={scrollRef} />
                     </section>
 
