@@ -1,0 +1,32 @@
+.item-list-card {
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    border-left: 5px solid transparent !important;
+}
+
+.item-list-card:hover {
+    transform: translateX(8px);
+    background-color: #ffffff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+    border-left: 5px solid #0d6efd !important;
+}
+
+.no-focus-outline:focus {
+    box-shadow: none !important;
+    border-color: transparent !important;
+    background-color: white !important;
+}
+
+.badge {
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+}
+
+.item-list-container {
+    min-height: 400px;
+}
+
+.input-group:focus-within {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15) !important;
+    border-color: #0d6efd !important;
+}
