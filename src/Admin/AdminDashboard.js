@@ -139,6 +139,17 @@ function AdminDashboard() {
             return newSet;
         });
     };
+    const adminVerify = () =>{
+        stompClient.current.publish({
+            destination: "/app/admin.verify",
+            body: JSON.stringify({
+                senderId: selectedUser,
+                itemId: userItemIds[selectedUser],
+                content: "--- แอดมินยืนยันมารับของได้ที่ ตึก 3 ชั้น 3 ---"
+            })
+        })
+    }
+
 
     const userList = Object.keys(chats);
 
@@ -193,21 +204,33 @@ function AdminDashboard() {
                                             </button>
                                         </>
                                     )}
+                                    <button className="admin-verify" onClick={adminVerify}>
+                                        ยืนยันผู้รับ
+                                    </button>
                                 </div>
                             </header>
                             <div className="messages-container">
-                                {chats[selectedUser].map((msg, idx) => (
-                                    <div key={idx} className={`bubble-row ${msg.role === 'admin' ? 'admin' : 'other'}`}>
-                                        <div className="bubble-wrapper">
-                                            <span className="role-tag">
-                                                {msg.role === 'admin' ? 'คุณ' : msg.role === 'ai' ? '🤖 AI' : '👤 User'}
-                                            </span>
-                                            <div className="bubble">
-                                                {msg.content}
+                                {chats[selectedUser].map((msg, idx) => {
+                                    // 1. ประกาศตัวแปรเช็ค Role ตรงนี้
+                                    const isAdmin = msg.role === 'admin';
+                                    const isUser  = msg.role === 'user';  // ✅
+                                    const isAi    = msg.role === 'ai' || msg.role === null;
+                                    // 2. คืนค่า (return) JSX ออกไป
+                                    return (
+                                        <div key={idx} className={`bubble-row ${isAdmin ? 'admin' : 'other'}`}>
+                                            <div className="bubble-wrapper">
+                                                <span className="role-tag">
+                                                    {isAdmin && 'คุณ'}
+                                                    {isAi && '🤖 AI'}
+                                                    {isUser && '👤 User'}
+                                                </span>
+                                                <div className="bubble">
+                                                    {msg.content}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                                 <div ref={scrollRef} />
                             </div>
 

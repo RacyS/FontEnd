@@ -249,23 +249,31 @@ body { margin: 0; background: var(--bg-page); color: var(--text-main); }
 }
 
 .badge--found {
-    background: #dbeafe;
-    color: #1d4ed8;        /* น้ำเงิน — พบสิ่งของ */
+    background: white;
+    border: 1px solid;
+    border-color:#198754 ;
+    color: #198754;       
 }
 
 .badge--verification {
-    background: #fef9c3;
-    color: #a16207;        /* เหลือง — กำลังตรวจสอบ */
+    background: white;
+    border: 1px solid;
+    border-color: #dc3545;
+    color:#dc3545;
 }
 
 .badge--claim {
-    background: #fff7ed;
-    color: #c2410c;        /* ส้ม — แนะนำให้ติดต่อ */
+    background: white;
+    border: 1px solid;
+    border-color: #0dcaf0;;
+    color: #0dcaf0;
 }
 
 .badge--ready {
-    background: #dcfce7;
-    color: #15803d;        /* เขียว — พร้อมรับคืน */
+    background: white;
+    border: 1px solid;
+    border-color: #ffc107;;
+    color: #ffc107;
 }
 
 /* Card Body */

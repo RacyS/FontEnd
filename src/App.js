@@ -5,7 +5,10 @@ import AdminDashboard from './Admin/AdminDashboard';
 import HomePage from "./HomePage";
 import UserChat from './User/UserChat'
 import AddItem from './Admin/AddItem'
-import DisplayItem from './DisplayItem'
+import ClaimHistory from './Admin/ClaimHistory'
+import ReadytopickupsList from './Admin/ReadytopickupsList';
+import UploadEvidence from './Admin/UploadEvidence';
+import EditItem from './Admin/EditItem'
 
 function App() {
     return (
@@ -17,8 +20,12 @@ function App() {
                 <Route path="/dashboard/found-item" element={<UserChat />}/>
                 <Route path="/AdminDashboard" element={<AdminDashboard />} />
 
+                <Route path="/CaimHistory" element={<ClaimHistory />} />
                 <Route path="/add-item" element={<AddItem />} />
-                <Route path="/test-item" element={<DisplayItem />} />
+                <Route path="/manage-items" element={<EditItem />} />
+                <Route path="/ready-to-pick" element={<ReadytopickupsList />} />
+                <Route path="/claim/:itemId" element={<UploadEvidence />} />
+
             </Routes>
         </Router>
     );

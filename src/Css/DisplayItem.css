@@ -1,7 +1,7 @@
-/* การตั้งค่าพื้นฐานของหน้า Gallery */
+
 .gallery-container {
     padding: 3rem 0;
-    background-color: #f0f2f5; /* สีเดียวกับหน้า Login */
+    background-color: #f0f2f5;
     min-height: 100vh;
     font-family: 'Arial', sans-serif;
 }
@@ -13,7 +13,6 @@
     margin-bottom: 2.5rem;
 }
 
-/* สไตล์ของ Card ไอเทมในหน้าหลัก */
 .item-card {
     background: white;
     border: none !important;
@@ -39,7 +38,6 @@
     color: #333;
 }
 
-/* ส่วนแสดงสถานะ (Badge) */
 .status-badge {
     padding: 0.5em 0.8em;
     border-radius: 20px;
@@ -49,7 +47,6 @@
     display: inline-block;
 }
 
-/* สไตล์ของ Pop-up (Modal) */
 .modal-content {
     border-radius: 15px !important;
     border: none !important;
@@ -66,12 +63,12 @@
     color: #333;
 }
 
-/* กล่องเก็บรายละเอียดไอเทมใน Modal */
+
 .detail-box {
     background-color: #f8f9fa;
     padding: 1.2rem;
     border-radius: 10px;
-    border-left: 5px solid #007bff; /* เส้นสีฟ้าแนวตั้ง */
+    border-left: 5px solid #007bff;
     margin-top: 1rem;
 }
 
@@ -81,7 +78,6 @@
     color: #444;
 }
 
-/* ปุ่มติดต่อใน Modal */
 .btn-contact {
     background-color: #007bff !important;
     border: none !important;

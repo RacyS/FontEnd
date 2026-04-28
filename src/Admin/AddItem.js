@@ -6,13 +6,13 @@ import '../Css/AddItem.css'; // นำเข้า CSS ที่ปรับป�
 const AddItem = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
-    const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
     const [itemName, setItemName] = useState('');
     const [itemStatus] = useState('FOUND');
     const [selectedFile, setSelectedFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
     const [details, setDetails] = useState([{ key: '', value: '', isCustom: false }]);
+    const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
     useEffect(() => {
         const userRole = localStorage.getItem('userRole') || 'STAFF';

@@ -208,6 +208,24 @@
     background: #ffedd5;
     border-color: #fb923c;
 }
+.admin-verify{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    background: green;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+.admin-verify:hover {
+    background: darkslategrey;
+}
 
 /* Active label */
 .active-label {
